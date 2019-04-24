@@ -1,0 +1,24 @@
+version: '3'
+services:
+  call-center:
+    build: .
+    depends_on:
+      - postgres
+    image: node:10.9
+    ports:
+      - "4000:4000"
+    volumes:
+      - .:/project
+    working_dir: /project
+    command:
+      - /bin/bash
+      - -c
+      - rm -rf node_modules && yarn install --production && yarn start:dev
+  postgres:
+    image: postgres:9.6
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=root
+      - POSTGRES_DB=teravoz
+    ports:
+      - 5432:5432
